@@ -66,8 +66,8 @@ class_names: &class_names ['1', '2', '3', '4']
 data:
   train:
     name: YoloDataset
-    img_path: ./data_set/'New_Sentry_datasets(1-500)'
-    ann_path: ./data_set/'New_Sentry_datasets(1-500)'
+    img_path: ./data_set
+    ann_path: ./data_set
     class_names: *class_names
     input_size: [416, 416] #[w,h]
     keep_ratio: False
@@ -85,8 +85,8 @@ data:
       normalize: [[103.53, 116.28, 123.675], [57.375, 57.12, 58.395]]
   val:
     name: YoloDataset
-    img_path: ./data_set/'New_Sentry_datasets(1-500)'
-    ann_path: ./data_set/'New_Sentry_datasets(1-500)'
+    img_path: ./data_set
+    ann_path: ./data_set
     class_names: *class_names
     input_size: [416, 416] #[w,h]
     keep_ratio: False
