@@ -5,7 +5,7 @@
 #           AP_small = 0.106
 #               AP_m = 0.322
 #               AP_l = 0.477
-save_dir: ./re
+save_dir: ./re_my
 model:
   weight_averager:
     name: ExpMovingAverager
@@ -28,7 +28,7 @@ model:
       activation: LeakyReLU
     head:
       name: NanoDetPlusHead
-      num_classes: 4
+      num_classes: 1
       input_channel: 96
       feat_channels: 96
       stacked_convs: 2
@@ -53,7 +53,7 @@ model:
     # Auxiliary head, only use in training time.
     aux_head:
       name: SimpleConvHead
-      num_classes: 4
+      num_classes: 1
       input_channel: 192
       feat_channels: 192
       stacked_convs: 4
@@ -61,13 +61,13 @@ model:
       activation: LeakyReLU
       reg_max: 7
 
-class_names: &class_names ['1', '2', '3', '4']
+class_names: &class_names ['board']
 
 data:
   train:
     name: YoloDataset
-    img_path: ./data_set
-    ann_path: ./data_set
+    img_path: ./data_set1
+    ann_path: ./data_set1
     class_names: *class_names
     input_size: [416, 416] #[w,h]
     keep_ratio: False
@@ -85,8 +85,8 @@ data:
       normalize: [[103.53, 116.28, 123.675], [57.375, 57.12, 58.395]]
   val:
     name: YoloDataset
-    img_path: ./data_set
-    ann_path: ./data_set
+    img_path: ./data_set1
+    ann_path: ./data_set1
     class_names: *class_names
     input_size: [416, 416] #[w,h]
     keep_ratio: False
@@ -119,3 +119,4 @@ evaluator:
   save_key: mAP
 log:
   interval: 50
+

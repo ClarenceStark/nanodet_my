@@ -113,7 +113,7 @@ venv.bak/
 *.log.json
 work_dirs/
 
+data_set1/
 # Pytorch
-*.pth
 *.py~
 *.sh~
