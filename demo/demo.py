@@ -35,7 +35,7 @@ def parse_args():
 
 
 class Predictor(object):
-    def __init__(self, cfg, model_path, logger, device="cuda:0"):
+    def __init__(self, cfg, model_path, logger, device="cpu"):
         self.cfg = cfg
         self.device = device
         model = build_model(cfg.model)
@@ -99,7 +99,7 @@ def main():
 
     load_config(cfg, args.config)
     logger = Logger(local_rank, use_tensorboard=False)
-    predictor = Predictor(cfg, args.model, logger, device="cuda:0")
+    predictor = Predictor(cfg, args.model, logger, device="cpu")
     logger.log('Press "Esc", "q" or "Q" to exit.')
     current_time = time.localtime()
     if args.demo == "image":
@@ -139,6 +139,8 @@ def main():
         vid_writer = cv2.VideoWriter(
             save_path, cv2.VideoWriter_fourcc(*"mp4v"), fps, (int(width), int(height))
         )
+        
+    
         while True:
             ret_val, frame = cap.read()
             if ret_val:
@@ -146,6 +148,7 @@ def main():
                 result_frame = predictor.visualize(res[0], meta, cfg.class_names, 0.35)
                 if args.save_result:
                     vid_writer.write(result_frame)
+
                 ch = cv2.waitKey(1)
                 if ch == 27 or ch == ord("q") or ch == ord("Q"):
                     break

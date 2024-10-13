@@ -5,7 +5,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from nanodet.util import bbox2distance, distance2bbox, multi_apply, overlay_bbox_cv, distance2quadrilateral, warp_quads,quads2distance
+from nanodet.util import bbox2distance, distance2bbox, multi_apply, overlay_bbox_cv
 
 from ...data.transform.warp import warp_boxes
 from ..loss.gfocal_loss import DistributionFocalLoss, QualityFocalLoss
@@ -95,10 +95,10 @@ class NanoDetPlusHead(nn.Module):
             [
                 nn.Conv2d(
                     self.feat_channels,
-                    self.num_classes + 8 * (self.reg_max + 1),
+                    self.num_classes + 4 * (self.reg_max + 1),
                     1,
                     padding=0,
-                ) #修改为预测角点的8输出
+                )
                 for _ in self.strides
             ]
         )
@@ -186,17 +186,15 @@ class NanoDetPlusHead(nn.Module):
         center_priors = torch.cat(mlvl_center_priors, dim=1)
 
         cls_preds, reg_preds = preds.split(
-            [self.num_classes, 8 * (self.reg_max + 1)], dim=-1
-        ) #改为8输出
+            [self.num_classes, 4 * (self.reg_max + 1)], dim=-1
+        )
         dis_preds = self.distribution_project(reg_preds) * center_priors[..., 2, None]
-        # decoded_bboxes = distance2bbox(center_priors[..., :2], dis_preds)
-        decoded_bboxes = distance2quadrilateral(center_priors[..., :2], dis_preds)
-
+        decoded_bboxes = distance2bbox(center_priors[..., :2], dis_preds)
 
         if aux_preds is not None:
             # use auxiliary head to assign
             aux_cls_preds, aux_reg_preds = aux_preds.split(
-                [self.num_classes, 8 * (self.reg_max + 1)], dim=-1
+                [self.num_classes, 4 * (self.reg_max + 1)], dim=-1
             )
             aux_dis_preds = (
                 self.distribution_project(aux_reg_preds) * center_priors[..., 2, None]
@@ -255,8 +253,8 @@ class NanoDetPlusHead(nn.Module):
         label_weights = torch.cat(label_weights, dim=0)
         bbox_targets = torch.cat(bbox_targets, dim=0)
         cls_preds = cls_preds.reshape(-1, self.num_classes)
-        reg_preds = reg_preds.reshape(-1, 8 * (self.reg_max + 1))
-        decoded_bboxes = decoded_bboxes.reshape(-1, 8)
+        reg_preds = reg_preds.reshape(-1, 4 * (self.reg_max + 1))
+        decoded_bboxes = decoded_bboxes.reshape(-1, 4)
         loss_qfl = self.loss_qfl(
             cls_preds,
             (labels, label_scores),
@@ -272,25 +270,19 @@ class NanoDetPlusHead(nn.Module):
             weight_targets = cls_preds[pos_inds].detach().sigmoid().max(dim=1)[0]
             bbox_avg_factor = max(reduce_mean(weight_targets.sum()).item(), 1.0)
 
-            # loss_bbox = self.loss_bbox(
-            #     decoded_bboxes[pos_inds],
-            #     bbox_targets[pos_inds],
-            #     weight=weight_targets,
-            #     avg_factor=bbox_avg_factor,
-            # )
-            loss_bbox = torch.nn.functional.mse_loss(
-                decoded_bboxes[pos_inds],  # 预测的四个角点
-                bbox_targets[pos_inds],    # 真实的四个角点
-                reduction='none'
+            loss_bbox = self.loss_bbox(
+                decoded_bboxes[pos_inds],
+                bbox_targets[pos_inds],
+                weight=weight_targets,
+                avg_factor=bbox_avg_factor,
             )
-            loss_bbox = (loss_bbox * weight_targets[..., None]).mean() / bbox_avg_factor
 
             dist_targets = torch.cat(dist_targets, dim=0)
             loss_dfl = self.loss_dfl(
                 reg_preds[pos_inds].reshape(-1, self.reg_max + 1),
                 dist_targets[pos_inds].reshape(-1),
-                weight=weight_targets[:, None].expand(-1, 8).reshape(-1),
-                avg_factor=8.0 * bbox_avg_factor,
+                weight=weight_targets[:, None].expand(-1, 4).reshape(-1),
+                avg_factor=4.0 * bbox_avg_factor,
             )
         else:
             loss_bbox = reg_preds.sum() * 0
@@ -364,7 +356,7 @@ class NanoDetPlusHead(nn.Module):
         if len(pos_inds) > 0:
             bbox_targets[pos_inds, :] = pos_gt_bboxes
             dist_targets[pos_inds, :] = (
-                quads2distance(center_priors[pos_inds, :2], pos_gt_bboxes)
+                bbox2distance(center_priors[pos_inds, :2], pos_gt_bboxes)
                 / center_priors[pos_inds, None, 2]
             )
             dist_targets = dist_targets.clamp(min=0, max=self.reg_max - 0.1)
@@ -399,10 +391,10 @@ class NanoDetPlusHead(nn.Module):
         if gt_bboxes.numel() == 0:
             # hack for index error case
             assert pos_assigned_gt_inds.numel() == 0
-            pos_gt_bboxes = torch.empty_like(gt_bboxes).view(-1, 8)
+            pos_gt_bboxes = torch.empty_like(gt_bboxes).view(-1, 4)
         else:
             if len(gt_bboxes.shape) < 2:
-                gt_bboxes = gt_bboxes.view(-1, 8)
+                gt_bboxes = gt_bboxes.view(-1, 4)
             pos_gt_bboxes = gt_bboxes[pos_assigned_gt_inds, :]
         return pos_inds, neg_inds, pos_gt_bboxes, pos_assigned_gt_inds
 
@@ -414,7 +406,7 @@ class NanoDetPlusHead(nn.Module):
             meta (dict): Meta info.
         """
         cls_scores, bbox_preds = preds.split(
-            [self.num_classes, 8 * (self.reg_max + 1)], dim=-1
+            [self.num_classes, 4 * (self.reg_max + 1)], dim=-1
         )
         result_list = self.get_bboxes(cls_scores, bbox_preds, meta)
         det_results = {}
@@ -445,16 +437,16 @@ class NanoDetPlusHead(nn.Module):
             det_result = {}
             det_bboxes, det_labels = result
             det_bboxes = det_bboxes.detach().cpu().numpy()
-            det_bboxes[:, :8] = warp_quads(
-                det_bboxes[:, :8], np.linalg.inv(warp_matrix), img_width, img_height
+            det_bboxes[:, :4] = warp_boxes(
+                det_bboxes[:, :4], np.linalg.inv(warp_matrix), img_width, img_height
             )
             classes = det_labels.detach().cpu().numpy()
             for i in range(self.num_classes):
                 inds = classes == i
                 det_result[i] = np.concatenate(
                     [
-                        det_bboxes[inds, :8].astype(np.float32),
-                        det_bboxes[inds, 8:9].astype(np.float32),
+                        det_bboxes[inds, :4].astype(np.float32),
+                        det_bboxes[inds, 4:5].astype(np.float32),
                     ],
                     axis=1,
                 ).tolist()
@@ -464,18 +456,10 @@ class NanoDetPlusHead(nn.Module):
     def show_result(
         self, img, dets, class_names, score_thres=0.3, show=True, save_path=None
     ):
-        # result = overlay_bbox_cv(img, dets, class_names, score_thresh=score_thres)
-        # if show:
-        #     cv2.imshow("det", result)
-        for i, det in dets.items():
-            for bbox in det:
-                # bbox[0:8] 是四个角点的坐标，bbox[8] 是得分
-                if bbox[8] > score_thres:
-                    points = np.array(bbox[0:8].reshape(4, 2), dtype=np.int32)
-                    img = cv2.polylines(img, [points], isClosed=True, color=(0, 255, 0), thickness=2)
-                    label = class_names[i]
-                    cv2.putText(img, label, (points[0][0], points[0][1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-        return img
+        result = overlay_bbox_cv(img, dets, class_names, score_thresh=score_thres)
+        if show:
+            cv2.imshow("det", result)
+        return result
 
     def get_bboxes(self, cls_preds, reg_preds, img_metas):
         """Decode the outputs to bboxes.
@@ -509,7 +493,7 @@ class NanoDetPlusHead(nn.Module):
         ]
         center_priors = torch.cat(mlvl_center_priors, dim=1)
         dis_preds = self.distribution_project(reg_preds) * center_priors[..., 2, None]
-        bboxes = distance2quadrilateral(center_priors[..., :2], dis_preds, max_shape=input_shape)
+        bboxes = distance2bbox(center_priors[..., :2], dis_preds, max_shape=input_shape)
         scores = cls_preds.sigmoid()
         result_list = []
         for i in range(b):
@@ -563,7 +547,7 @@ class NanoDetPlusHead(nn.Module):
                 feat = conv(feat)
             output = gfl_cls(feat)
             cls_pred, reg_pred = output.split(
-                [self.num_classes, 8 * (self.reg_max + 1)], dim=1
+                [self.num_classes, 4 * (self.reg_max + 1)], dim=1
             )
             cls_pred = cls_pred.sigmoid()
             out = torch.cat([cls_pred, reg_pred], dim=1)
