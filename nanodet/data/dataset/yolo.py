@@ -157,12 +157,16 @@ class YoloDataset(CocoDataset):
         image_info = []
         categories = []
         annotations = []
+        
+        # 设置类别信息
         for idx, supercat in enumerate(self.class_names):
             categories.append(
                 {"supercategory": supercat, "id": idx + 1, "name": supercat}
             )
+        
         ann_id = 1
 
+        # 遍历每个YOLO格式的txt文件
         for idx, txt_name in enumerate(ann_file_names):
             ann_file = os.path.join(ann_path, txt_name)
             image_file = self._find_image(os.path.splitext(ann_file)[0])
@@ -185,37 +189,49 @@ class YoloDataset(CocoDataset):
             }
             image_info.append(info)
 
-            # 修改读取四角点的数据结构
+            # 处理每一行（每一个标注）
             for line in lines:
                 data = [float(t) for t in line.split(" ")]
                 cat_id = int(data[0])
                 points = np.array(data[1:]).reshape(4, 2)  # 假设是四个点的 (x, y) 坐标
-                # 需要将坐标转换为像素坐标
+                
+                # 将归一化的坐标转化为像素坐标
                 points[:, 0] *= width
                 points[:, 1] *= height
                 points = np.round(points).astype(int)
                 
-                # 如果cat_id超出类别数，跳过
+                # 如果类别id超出定义的范围，则跳过
                 if cat_id >= len(self.class_names):
                     logging.warning(f"Category {cat_id} is not defined in config ({txt_name})")
                     continue
 
+                # 计算外接矩形的 bbox
+                x_min = np.min(points[:, 0])
+                y_min = np.min(points[:, 1])
+                x_max = np.max(points[:, 0])
+                y_max = np.max(points[:, 1])
+                bbox = [x_min, y_min, x_max - x_min, y_max - y_min]  # bbox 需要 [x_min, y_min, w, h] 格式
+
                 # 检查无效的角点数据
                 if any(points[:, 0] < 0) or any(points[:, 1] < 0):
-                    logging.warning("WARNING! Invalid points found in file {}.".format(txt_name))
+                    logging.warning(f"Invalid points found in file {txt_name}.")
                     continue
+
+                # 计算面积
+                area = 0.5 * np.abs(np.dot(points[:, 0], np.roll(points[:, 1], 1)) - np.dot(points[:, 1], np.roll(points[:, 0], 1)))
 
                 # COCO segmentation 用来存储四角点（而不是 bbox）
                 segmentation = points.flatten().tolist()
-                area = 0.5 * np.abs(np.dot(points[:, 0], np.roll(points[:, 1], 1)) - np.dot(points[:, 1], np.roll(points[:, 0], 1)))
 
+                # 创建标注字典，包含 segmentation 和 bbox
                 ann = {
                     "image_id": idx + 1,
                     "segmentation": [segmentation],  # 使用 segmentation 来存储四个角点
+                    "bbox": bbox,  # 外接矩形框
                     "category_id": cat_id + 1,
                     "iscrowd": 0,
                     "id": ann_id,
-                    "area": area,
+                    "area": area,  # 使用多边形面积
                 }
                 annotations.append(ann)
                 ann_id += 1
@@ -225,30 +241,9 @@ class YoloDataset(CocoDataset):
             "categories": categories,
             "annotations": annotations,
         }
+
         logging.info(
             "Load {} txt files and {} annotations".format(len(image_info), len(annotations))
         )
         logging.info("Done (t={:0.2f}s)".format(time.time() - tic))
         return coco_dict
-
-
-    def get_data_info(self, ann_path):
-        """
-        Load basic information of dataset such as image path, label and so on.
-        :param ann_path: coco json file path
-        :return: image info:
-        [{'file_name': '000000000139.jpg',
-          'height': 426,
-          'width': 640,
-          'id': 139},
-         ...
-        ]
-        """
-        coco_dict = self.yolo_to_coco(ann_path)
-        self.coco_api = CocoYolo(coco_dict)
-        self.cat_ids = sorted(self.coco_api.getCatIds())
-        self.cat2label = {cat_id: i for i, cat_id in enumerate(self.cat_ids)}
-        self.cats = self.coco_api.loadCats(self.cat_ids)
-        self.img_ids = sorted(self.coco_api.imgs.keys())
-        img_info = self.coco_api.loadImgs(self.img_ids)
-        return img_info
