@@ -47,9 +47,14 @@ class CocoYolo(COCO):
 
 
 class YoloDataset(CocoDataset):
-    def __init__(self, class_names, **kwargs):
+  
+
+    def __init__(self, class_names, img_path, ann_path, mode, **kwargs):
         self.class_names = class_names
-        super(YoloDataset, self).__init__(**kwargs)
+        self.img_path = img_path
+        super(YoloDataset, self).__init__(img_path=self.img_path, ann_path=ann_path, mode=mode, **kwargs)
+
+        
 
     @staticmethod
     def _find_image(
@@ -80,14 +85,17 @@ class YoloDataset(CocoDataset):
                 {"supercategory": supercat, "id": idx + 1, "name": supercat}
             )
         ann_id = 1
-
         for idx, txt_name in enumerate(ann_file_names):
             ann_file = os.path.join(ann_path, txt_name)
-            image_file = self._find_image(os.path.splitext(ann_file)[0])
+            image_name = os.path.splitext(txt_name)[0]
+            image_prefix = os.path.join(self.img_path, image_name)
+            image_file = self._find_image(image_prefix)
 
             if image_file is None:
                 logging.warning(f"Could not find image for {ann_file}")
                 continue
+
+     
 
             with open(ann_file, "r") as f:
                 lines = f.readlines()

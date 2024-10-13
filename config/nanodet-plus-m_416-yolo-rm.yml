@@ -66,8 +66,8 @@ class_names: &class_names ['board']
 data:
   train:
     name: YoloDataset
-    img_path: ./data_set1
-    ann_path: ./data_set1
+    img_path: ./data_set1/imgs
+    ann_path: ./data_set1/anns
     class_names: *class_names
     input_size: [416, 416] #[w,h]
     keep_ratio: False
@@ -85,15 +85,15 @@ data:
       normalize: [[103.53, 116.28, 123.675], [57.375, 57.12, 58.395]]
   val:
     name: YoloDataset
-    img_path: ./data_set1
-    ann_path: ./data_set1
+    img_path: ./data_set1/imgs
+    ann_path: ./data_set1/anns
     class_names: *class_names
     input_size: [416, 416] #[w,h]
     keep_ratio: False
     pipeline:
       normalize: [[103.53, 116.28, 123.675], [57.375, 57.12, 58.395]]
 device:
-  gpu_ids: [0]
+  gpu_ids: -1
   workers_per_gpu: 10
   batchsize_per_gpu: 32
 schedule:
@@ -119,4 +119,3 @@ evaluator:
   save_key: mAP
 log:
   interval: 50
-
