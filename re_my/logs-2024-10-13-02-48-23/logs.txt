@@ -1,0 +1,228 @@
+[NanoDet][10-13 02:48:23]INFO: Setting up data...
+[NanoDet][10-13 02:48:23]INFO: Creating model...
+[NanoDet][10-13 02:48:25]INFO: Weight Averaging is enabled
+[NanoDet][10-13 02:48:30]INFO: Train|Epoch1/100|Iter0(1/9)| mem:5.86G| lr:1.00e-07| loss_qfl:0.5681| loss_bbox:1.1271| loss_dfl:0.5213| aux_loss_qfl:0.5045| aux_loss_bbox:1.1823| aux_loss_dfl:0.5390| 
+[NanoDet][10-13 02:49:32]INFO: Train|Epoch6/100|Iter50(6/9)| mem:6.53G| lr:1.00e-04| loss_qfl:0.4088| loss_bbox:0.7036| loss_dfl:0.4103| aux_loss_qfl:0.0938| aux_loss_bbox:0.3238| aux_loss_dfl:0.2328| 
+[NanoDet][10-13 02:50:22]INFO: Val|Epoch10/100|Iter90(1/10)| mem:6.53G| lr:1.78e-04| loss_qfl:0.1200| loss_bbox:0.4986| loss_dfl:0.3012| aux_loss_qfl:0.1002| aux_loss_bbox:0.2177| aux_loss_dfl:0.1714| 
+[NanoDet][10-13 02:50:27]INFO: 
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.626
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.986
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.759
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.626
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.618
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.722
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.722
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.722
+
+[NanoDet][10-13 02:50:27]INFO: 
+| class   | AP50   | mAP   |
+|:--------|:-------|:------|
+| board   | 98.6   | 62.6  |
+[NanoDet][10-13 02:50:27]INFO: Saving model to ./re_my/model_best/nanodet_model_best.pth
+[NanoDet][10-13 02:50:27]INFO: Val_metrics: {'mAP': 0.6257394126839246, 'AP_50': 0.9863842743541942, 'AP_75': 0.7585140198719388, 'AP_small': -1.0, 'AP_m': -1.0, 'AP_l': 0.6257394126839246}
+[NanoDet][10-13 02:50:41]INFO: Train|Epoch12/100|Iter100(2/9)| mem:6.53G| lr:2.00e-04| loss_qfl:0.1454| loss_bbox:0.4519| loss_dfl:0.3202| aux_loss_qfl:0.1496| aux_loss_bbox:0.1866| aux_loss_dfl:0.1673| 
+[NanoDet][10-13 02:51:33]INFO: Train|Epoch17/100|Iter150(7/9)| mem:6.53G| lr:3.00e-04| loss_qfl:0.1219| loss_bbox:0.3014| loss_dfl:0.2471| aux_loss_qfl:0.0773| aux_loss_bbox:0.1719| aux_loss_dfl:0.1609| 
+[NanoDet][10-13 02:52:05]INFO: Val|Epoch20/100|Iter180(1/10)| mem:6.53G| lr:3.58e-04| loss_qfl:0.2905| loss_bbox:0.3373| loss_dfl:0.2297| aux_loss_qfl:0.0765| aux_loss_bbox:0.1711| aux_loss_dfl:0.1557| 
+[NanoDet][10-13 02:52:09]INFO: 
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.724
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.724
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.764
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.764
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.764
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.764
+
+[NanoDet][10-13 02:52:09]INFO: 
+| class   | AP50   | mAP   |
+|:--------|:-------|:------|
+| board   | 100.0  | 72.4  |
+[NanoDet][10-13 02:52:09]INFO: Saving model to ./re_my/model_best/nanodet_model_best.pth
+[NanoDet][10-13 02:52:09]INFO: Val_metrics: {'mAP': 0.724251492506601, 'AP_50': 1.0, 'AP_75': 1.0, 'AP_small': -1.0, 'AP_m': -1.0, 'AP_l': 0.724251492506601}
+[NanoDet][10-13 02:52:33]INFO: Train|Epoch23/100|Iter200(3/9)| mem:6.53G| lr:4.00e-04| loss_qfl:0.2209| loss_bbox:0.2818| loss_dfl:0.2393| aux_loss_qfl:0.0692| aux_loss_bbox:0.1761| aux_loss_dfl:0.1597| 
+[NanoDet][10-13 02:53:26]INFO: Train|Epoch28/100|Iter250(8/9)| mem:6.53G| lr:5.00e-04| loss_qfl:0.0931| loss_bbox:0.2279| loss_dfl:0.2088| aux_loss_qfl:0.0565| aux_loss_bbox:0.1867| aux_loss_dfl:0.1687| 
+[NanoDet][10-13 02:53:48]INFO: Val|Epoch30/100|Iter270(1/10)| mem:6.53G| lr:5.37e-04| loss_qfl:0.1458| loss_bbox:0.2590| loss_dfl:0.2115| aux_loss_qfl:0.0584| aux_loss_bbox:0.1847| aux_loss_dfl:0.1552| 
+[NanoDet][10-13 02:53:51]INFO: 
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.809
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.809
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.839
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.839
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.839
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.839
+
+[NanoDet][10-13 02:53:51]INFO: 
+| class   | AP50   | mAP   |
+|:--------|:-------|:------|
+| board   | 100.0  | 80.9  |
+[NanoDet][10-13 02:53:52]INFO: Saving model to ./re_my/model_best/nanodet_model_best.pth
+[NanoDet][10-13 02:53:52]INFO: Val_metrics: {'mAP': 0.8085514849839576, 'AP_50': 1.0, 'AP_75': 1.0, 'AP_small': -1.0, 'AP_m': -1.0, 'AP_l': 0.8085514849839576}
+[NanoDet][10-13 02:54:26]INFO: Train|Epoch34/100|Iter300(4/9)| mem:6.53G| lr:6.00e-04| loss_qfl:0.1201| loss_bbox:0.1785| loss_dfl:0.1840| aux_loss_qfl:0.0726| aux_loss_bbox:0.1577| aux_loss_dfl:0.1657| 
+[NanoDet][10-13 02:55:18]INFO: Train|Epoch39/100|Iter350(9/9)| mem:6.53G| lr:7.00e-04| loss_qfl:0.0783| loss_bbox:0.2034| loss_dfl:0.1808| aux_loss_qfl:0.0556| aux_loss_bbox:0.1297| aux_loss_dfl:0.1458| 
+[NanoDet][10-13 02:55:30]INFO: Val|Epoch40/100|Iter360(1/10)| mem:6.53G| lr:7.17e-04| loss_qfl:0.1107| loss_bbox:0.1926| loss_dfl:0.1703| aux_loss_qfl:0.0713| aux_loss_bbox:0.1365| aux_loss_dfl:0.1418| 
+[NanoDet][10-13 02:55:34]INFO: 
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.825
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.825
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.853
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.853
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.853
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.853
+
+[NanoDet][10-13 02:55:34]INFO: 
+| class   | AP50   | mAP   |
+|:--------|:-------|:------|
+| board   | 100.0  | 82.5  |
+[NanoDet][10-13 02:55:34]INFO: Saving model to ./re_my/model_best/nanodet_model_best.pth
+[NanoDet][10-13 02:55:34]INFO: Val_metrics: {'mAP': 0.8248178472207998, 'AP_50': 1.0, 'AP_75': 1.0, 'AP_small': -1.0, 'AP_m': -1.0, 'AP_l': 0.8248178472207998}
+[NanoDet][10-13 02:56:19]INFO: Train|Epoch45/100|Iter400(5/9)| mem:6.53G| lr:8.00e-04| loss_qfl:0.2394| loss_bbox:0.2015| loss_dfl:0.1717| aux_loss_qfl:0.1576| aux_loss_bbox:0.1499| aux_loss_dfl:0.1520| 
+[NanoDet][10-13 02:57:12]INFO: Val|Epoch50/100|Iter450(1/10)| mem:6.53G| lr:8.96e-04| loss_qfl:0.0734| loss_bbox:0.2025| loss_dfl:0.1609| aux_loss_qfl:0.0468| aux_loss_bbox:0.1144| aux_loss_dfl:0.1370| 
+[NanoDet][10-13 02:57:16]INFO: 
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.837
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.837
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.862
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.862
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.862
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.862
+
+[NanoDet][10-13 02:57:16]INFO: 
+| class   | AP50   | mAP   |
+|:--------|:-------|:------|
+| board   | 100.0  | 83.7  |
+[NanoDet][10-13 02:57:16]INFO: Saving model to ./re_my/model_best/nanodet_model_best.pth
+[NanoDet][10-13 02:57:17]INFO: Val_metrics: {'mAP': 0.836562194604006, 'AP_50': 1.0, 'AP_75': 1.0, 'AP_small': -1.0, 'AP_m': -1.0, 'AP_l': 0.836562194604006}
+[NanoDet][10-13 02:57:20]INFO: Train|Epoch51/100|Iter450(1/9)| mem:6.53G| lr:9.00e-04| loss_qfl:0.0909| loss_bbox:0.1620| loss_dfl:0.1578| aux_loss_qfl:0.0628| aux_loss_bbox:0.1202| aux_loss_dfl:0.1378| 
+[NanoDet][10-13 02:58:12]INFO: Train|Epoch56/100|Iter500(6/9)| mem:6.53G| lr:1.00e-03| loss_qfl:0.0786| loss_bbox:0.1680| loss_dfl:0.1630| aux_loss_qfl:0.0429| aux_loss_bbox:0.1271| aux_loss_dfl:0.1427| 
+[NanoDet][10-13 02:58:56]INFO: Val|Epoch60/100|Iter540(1/10)| mem:6.53G| lr:9.85e-04| loss_qfl:0.1157| loss_bbox:0.1782| loss_dfl:0.1609| aux_loss_qfl:0.0664| aux_loss_bbox:0.1235| aux_loss_dfl:0.1407| 
+[NanoDet][10-13 02:59:00]INFO: 
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.865
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.865
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.885
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.885
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.885
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.885
+
+[NanoDet][10-13 02:59:00]INFO: 
+| class   | AP50   | mAP   |
+|:--------|:-------|:------|
+| board   | 100.0  | 86.5  |
+[NanoDet][10-13 02:59:01]INFO: Saving model to ./re_my/model_best/nanodet_model_best.pth
+[NanoDet][10-13 02:59:01]INFO: Val_metrics: {'mAP': 0.8650788645451185, 'AP_50': 1.0, 'AP_75': 1.0, 'AP_small': -1.0, 'AP_m': -1.0, 'AP_l': 0.8650788645451185}
+[NanoDet][10-13 02:59:17]INFO: Train|Epoch62/100|Iter550(2/9)| mem:6.53G| lr:9.81e-04| loss_qfl:0.1163| loss_bbox:0.1722| loss_dfl:0.1542| aux_loss_qfl:0.0812| aux_loss_bbox:0.1691| aux_loss_dfl:0.1454| 
+[NanoDet][10-13 03:00:17]INFO: Train|Epoch67/100|Iter600(7/9)| mem:6.53G| lr:9.65e-04| loss_qfl:0.0757| loss_bbox:0.1251| loss_dfl:0.1542| aux_loss_qfl:0.0486| aux_loss_bbox:0.1093| aux_loss_dfl:0.1447| 
+[NanoDet][10-13 03:00:56]INFO: Val|Epoch70/100|Iter630(1/10)| mem:6.53G| lr:9.51e-04| loss_qfl:0.0856| loss_bbox:0.1232| loss_dfl:0.1410| aux_loss_qfl:0.0494| aux_loss_bbox:0.0921| aux_loss_dfl:0.1331| 
+[NanoDet][10-13 03:01:00]INFO: 
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.913
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.913
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.932
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.932
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.932
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.932
+
+[NanoDet][10-13 03:01:00]INFO: 
+| class   | AP50   | mAP   |
+|:--------|:-------|:------|
+| board   | 100.0  | 91.3  |
+[NanoDet][10-13 03:01:00]INFO: Saving model to ./re_my/model_best/nanodet_model_best.pth
+[NanoDet][10-13 03:01:01]INFO: Val_metrics: {'mAP': 0.9131057452612666, 'AP_50': 1.0, 'AP_75': 1.0, 'AP_small': -1.0, 'AP_m': -1.0, 'AP_l': 0.9131057452612666}
+[NanoDet][10-13 03:01:25]INFO: Train|Epoch73/100|Iter650(3/9)| mem:6.53G| lr:9.43e-04| loss_qfl:0.0742| loss_bbox:0.1552| loss_dfl:0.1473| aux_loss_qfl:0.0612| aux_loss_bbox:0.1218| aux_loss_dfl:0.1372| 
+[NanoDet][10-13 03:02:17]INFO: Train|Epoch78/100|Iter700(8/9)| mem:6.53G| lr:9.24e-04| loss_qfl:0.0818| loss_bbox:0.1225| loss_dfl:0.1462| aux_loss_qfl:0.0525| aux_loss_bbox:0.1354| aux_loss_dfl:0.1422| 
+[NanoDet][10-13 03:02:39]INFO: Val|Epoch80/100|Iter720(1/10)| mem:6.53G| lr:9.12e-04| loss_qfl:0.0540| loss_bbox:0.1237| loss_dfl:0.1386| aux_loss_qfl:0.0375| aux_loss_bbox:0.0793| aux_loss_dfl:0.1316| 
+[NanoDet][10-13 03:02:42]INFO: 
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.905
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.905
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.923
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.923
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.923
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.923
+
+[NanoDet][10-13 03:02:42]INFO: 
+| class   | AP50   | mAP   |
+|:--------|:-------|:------|
+| board   | 100.0  | 90.5  |
+[NanoDet][10-13 03:02:42]INFO: Val_metrics: {'mAP': 0.9049714604017627, 'AP_50': 1.0, 'AP_75': 1.0, 'AP_small': -1.0, 'AP_m': -1.0, 'AP_l': 0.9049714604017627}
+[NanoDet][10-13 03:03:17]INFO: Train|Epoch84/100|Iter750(4/9)| mem:6.53G| lr:9.00e-04| loss_qfl:0.1178| loss_bbox:0.1598| loss_dfl:0.1597| aux_loss_qfl:0.0839| aux_loss_bbox:0.1498| aux_loss_dfl:0.1492| 
+[NanoDet][10-13 03:04:09]INFO: Train|Epoch89/100|Iter800(9/9)| mem:6.53G| lr:8.79e-04| loss_qfl:0.0659| loss_bbox:0.1281| loss_dfl:0.1468| aux_loss_qfl:0.0300| aux_loss_bbox:0.1004| aux_loss_dfl:0.1368| 
+[NanoDet][10-13 03:04:21]INFO: Val|Epoch90/100|Iter810(1/10)| mem:6.53G| lr:8.70e-04| loss_qfl:0.1016| loss_bbox:0.1312| loss_dfl:0.1429| aux_loss_qfl:0.0843| aux_loss_bbox:0.1221| aux_loss_dfl:0.1385| 
+[NanoDet][10-13 03:04:24]INFO: 
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.896
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.896
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.912
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.912
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.912
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.912
+
+[NanoDet][10-13 03:04:24]INFO: 
+| class   | AP50   | mAP   |
+|:--------|:-------|:------|
+| board   | 100.0  | 89.6  |
+[NanoDet][10-13 03:04:24]INFO: Val_metrics: {'mAP': 0.896321222813083, 'AP_50': 1.0, 'AP_75': 1.0, 'AP_small': -1.0, 'AP_m': -1.0, 'AP_l': 0.896321222813083}
+[NanoDet][10-13 03:05:09]INFO: Train|Epoch95/100|Iter850(5/9)| mem:6.53G| lr:8.53e-04| loss_qfl:0.0657| loss_bbox:0.1201| loss_dfl:0.1460| aux_loss_qfl:0.0315| aux_loss_bbox:0.1033| aux_loss_dfl:0.1404| 
+[NanoDet][10-13 03:06:03]INFO: Val|Epoch100/100|Iter900(1/10)| mem:6.53G| lr:8.25e-04| loss_qfl:0.0762| loss_bbox:0.1028| loss_dfl:0.1334| aux_loss_qfl:0.0311| aux_loss_bbox:0.0978| aux_loss_dfl:0.1326| 
+[NanoDet][10-13 03:06:06]INFO: 
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.911
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.911
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.933
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.933
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.933
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.933
+
+[NanoDet][10-13 03:06:06]INFO: 
+| class   | AP50   | mAP   |
+|:--------|:-------|:------|
+| board   | 100.0  | 91.1  |
+[NanoDet][10-13 03:06:06]INFO: Val_metrics: {'mAP': 0.9112291483193865, 'AP_50': 1.0, 'AP_75': 1.0, 'AP_small': -1.0, 'AP_m': -1.0, 'AP_l': 0.9112291483193865}
