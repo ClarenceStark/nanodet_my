@@ -6,6 +6,14 @@ from tqdm import tqdm  # 进度条
 from dataLoader import CornerDataset  # 假设数据加载器位于 my_data_loader.py 文件中
 from model import Net  # 假设模型定义在 my_model.py 文件中
 
+def print_memory_usage():
+    if torch.cuda.is_available():
+        allocated_memory = torch.cuda.memory_allocated() / (1024**2)  # 转换为 MB
+        max_allocated_memory = torch.cuda.max_memory_allocated() / (1024**2)  # 最大分配的显存
+        print(f"当前显存使用量: {allocated_memory:.2f} MB")
+        print(f"最大显存使用量: {max_allocated_memory:.2f} MB")
+
+
 # 设置设备为 GPU 或 CPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -63,7 +71,8 @@ for epoch in range(num_epochs):
 
         # 打印损失信息
         if (i + 1) % 10 == 0:
-            print(f"Epoch [{epoch + 1}/{num_epochs}], Step [{i + 1}/{len(train_loader)}], Loss: {running_loss / (i + 1):.4f},  Class Loss: {loss_class / (i + 1):.4f},  Point Loss: {loss_points / (i + 1):.4f}")
+            print(f"Epoch [{epoch + 1}/{num_epochs}], Step [{i + 1}/{len(train_loader)}], Loss: {running_loss / (i + 1):.4f},  Class Loss: {loss_class:.4f},  Point Loss: {loss_points:.4f}")
+            print_memory_usage()
 
     # 每个 epoch 结束后打印平均损失
     print(f"Epoch [{epoch + 1}/{num_epochs}], Average Loss: {running_loss / len(train_loader):.4f}")
