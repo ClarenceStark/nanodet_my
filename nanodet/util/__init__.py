@@ -14,6 +14,9 @@ from .rank_filter import rank_filter
 from .scatter_gather import gather_results, scatter_kwargs
 from .util_mixins import NiceRepr
 from .visualization import Visualizer, overlay_bbox_cv
+from .point_transform import distance2quadrilateral
+from .point_transform import warp_quads
+from .point_transform import quads2distance
 
 __all__ = [
     "distance2bbox",
@@ -40,4 +43,7 @@ __all__ = [
     "collect_files",
     "NanoDetLightningLogger",
     "convert_avg_params",
+    "quads2distance",
+    "warp_quads",
+    "distance2quadrilateral"
 ]
