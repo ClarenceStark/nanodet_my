@@ -52,27 +52,29 @@ class CocoDetectionEvaluator:
 
     def results2json(self, results):
         """
-        results: {image_id: {label: [bboxes...] } }
-        :return coco json format: {image_id:
-                                   category_id:
-                                   bbox:
-                                   score: }
+        results: {image_id: {label: [dets...] } }
+        :return coco json format: [{image_id, category_id, segmentation, score}, ...]
         """
         json_results = []
         for image_id, dets in results.items():
             for label, bboxes in dets.items():
                 category_id = self.cat_ids[label]
                 for bbox in bboxes:
-                    score = float(bbox[4])
+                    # 假设每个 bbox 包含四个角点的坐标和一个得分：[x1, y1, x2, y2, x3, y3, x4, y4, score]
+                    if len(bbox) < 9:
+                        logging.warning(f"Detection bbox has insufficient elements: {bbox}")
+                        continue
+                    score = float(bbox[8])
+                    segmentation = bbox[:8].tolist()  # [x1, y1, x2, y2, x3, y3, x4, y4]
                     detection = dict(
                         image_id=int(image_id),
                         category_id=int(category_id),
-                        bbox=xyxy2xywh(bbox),
+                        segmentation=[segmentation],  # COCO expects a list of lists for segmentation
                         score=score,
                     )
                     json_results.append(detection)
         return json_results
-
+    
     def evaluate(self, results, save_dir, rank=-1):
         results_json = self.results2json(results)
         if len(results_json) == 0:
@@ -90,7 +92,7 @@ class CocoDetectionEvaluator:
         json.dump(results_json, open(json_path, "w"))
         coco_dets = self.coco_api.loadRes(json_path)
         coco_eval = COCOeval(
-            copy.deepcopy(self.coco_api), copy.deepcopy(coco_dets), "bbox"
+            copy.deepcopy(self.coco_api), copy.deepcopy(coco_dets), "segm"  # 修改为 "segm"
         )
         coco_eval.evaluate()
         coco_eval.accumulate()
@@ -108,7 +110,6 @@ class CocoDetectionEvaluator:
         per_class_maps = []
         precisions = coco_eval.eval["precision"]
         # dimension of precisions: [TxRxKxAxM]
-        # precision has dims (iou, recall, cls, area range, max dets)
         assert len(self.class_names) == precisions.shape[2]
 
         for idx, name in enumerate(self.class_names):
@@ -147,3 +148,5 @@ class CocoDetectionEvaluator:
         for k, v in zip(self.metric_names, aps):
             eval_results[k] = v
         return eval_results
+
+    

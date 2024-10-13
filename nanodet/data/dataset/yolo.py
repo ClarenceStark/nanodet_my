@@ -62,12 +62,94 @@ class YoloDataset(CocoDataset):
                 return path
         return None
 
+    # def yolo_to_coco(self, ann_path):
+    #     """
+    #     convert yolo annotations to coco_api
+    #     :param ann_path:
+    #     :return:
+    #     """
+    #     logging.info("loading annotations into memory...")
+    #     tic = time.time()
+    #     ann_file_names = get_file_list(ann_path, type=".txt")
+    #     logging.info("Found {} annotation files.".format(len(ann_file_names)))
+    #     image_info = []
+    #     categories = []
+    #     annotations = []
+    #     for idx, supercat in enumerate(self.class_names):
+    #         categories.append(
+    #             {"supercategory": supercat, "id": idx + 1, "name": supercat}
+    #         )
+    #     ann_id = 1
+
+    #     for idx, txt_name in enumerate(ann_file_names):
+    #         ann_file = os.path.join(ann_path, txt_name)
+    #         image_file = self._find_image(os.path.splitext(ann_file)[0])
+
+    #         if image_file is None:
+    #             logging.warning(f"Could not find image for {ann_file}")
+    #             continue
+
+    #         with open(ann_file, "r") as f:
+    #             lines = f.readlines()
+
+    #         width, height = imagesize.get(image_file)
+
+    #         file_name = os.path.basename(image_file)
+    #         info = {
+    #             "file_name": file_name,
+    #             "height": height,
+    #             "width": width,
+    #             "id": idx + 1,
+    #         }
+    #         image_info.append(info)
+    #         for line in lines:
+    #             data = [float(t) for t in line.split(" ")]
+    #             cat_id = int(data[0])
+    #             locations = np.array(data[1:]).reshape((len(data) // 2, 2))
+    #             bbox = locations[0:2]
+
+    #             bbox[0] -= bbox[1] * 0.5
+
+    #             bbox = np.round(bbox * np.array([width, height])).astype(int)
+    #             x, y = bbox[0][0], bbox[0][1]
+    #             w, h = bbox[1][0], bbox[1][1]
+
+    #             if cat_id >= len(self.class_names):
+    #                 logging.warning(
+    #                     f"Category {cat_id} is not defined in config ({txt_name})"
+    #                 )
+    #                 continue
+
+    #             if w < 0 or h < 0:
+    #                 logging.warning(
+    #                     "WARNING! Find error data in file {}! Box w and "
+    #                     "h should > 0. Pass this box annotation.".format(txt_name)
+    #                 )
+    #                 continue
+
+    #             coco_box = [max(x, 0), max(y, 0), min(w, width), min(h, height)]
+    #             ann = {
+    #                 "image_id": idx + 1,
+    #                 "bbox": coco_box,
+    #                 "category_id": cat_id + 1,
+    #                 "iscrowd": 0,
+    #                 "id": ann_id,
+    #                 "area": coco_box[2] * coco_box[3],
+    #             }
+    #             annotations.append(ann)
+    #             ann_id += 1
+
+    #     coco_dict = {
+    #         "images": image_info,
+    #         "categories": categories,
+    #         "annotations": annotations,
+    #     }
+    #     logging.info(
+    #         "Load {} txt files and {} boxes".format(len(image_info), len(annotations))
+    #     )
+    #     logging.info("Done (t={:0.2f}s)".format(time.time() - tic))
+    #     return coco_dict
     def yolo_to_coco(self, ann_path):
-        """
-        convert yolo annotations to coco_api
-        :param ann_path:
-        :return:
-        """
         logging.info("loading annotations into memory...")
         tic = time.time()
         ann_file_names = get_file_list(ann_path, type=".txt")
@@ -102,39 +184,38 @@ class YoloDataset(CocoDataset):
                 "id": idx + 1,
             }
             image_info.append(info)
+
+            # 修改读取四角点的数据结构
             for line in lines:
                 data = [float(t) for t in line.split(" ")]
                 cat_id = int(data[0])
-                locations = np.array(data[1:]).reshape((len(data) // 2, 2))
-                bbox = locations[0:2]
-
-                bbox[0] -= bbox[1] * 0.5
-
-                bbox = np.round(bbox * np.array([width, height])).astype(int)
-                x, y = bbox[0][0], bbox[0][1]
-                w, h = bbox[1][0], bbox[1][1]
-
+                points = np.array(data[1:]).reshape(4, 2)  # 假设是四个点的 (x, y) 坐标
+                # 需要将坐标转换为像素坐标
+                points[:, 0] *= width
+                points[:, 1] *= height
+                points = np.round(points).astype(int)
+                
+                # 如果cat_id超出类别数，跳过
                 if cat_id >= len(self.class_names):
-                    logging.warning(
-                        f"Category {cat_id} is not defined in config ({txt_name})"
-                    )
+                    logging.warning(f"Category {cat_id} is not defined in config ({txt_name})")
                     continue
 
-                if w < 0 or h < 0:
-                    logging.warning(
-                        "WARNING! Find error data in file {}! Box w and "
-                        "h should > 0. Pass this box annotation.".format(txt_name)
-                    )
+                # 检查无效的角点数据
+                if any(points[:, 0] < 0) or any(points[:, 1] < 0):
+                    logging.warning("WARNING! Invalid points found in file {}.".format(txt_name))
                     continue
 
-                coco_box = [max(x, 0), max(y, 0), min(w, width), min(h, height)]
+                # COCO segmentation 用来存储四角点（而不是 bbox）
+                segmentation = points.flatten().tolist()
+                area = 0.5 * np.abs(np.dot(points[:, 0], np.roll(points[:, 1], 1)) - np.dot(points[:, 1], np.roll(points[:, 0], 1)))
+
                 ann = {
                     "image_id": idx + 1,
-                    "bbox": coco_box,
+                    "segmentation": [segmentation],  # 使用 segmentation 来存储四个角点
                     "category_id": cat_id + 1,
                     "iscrowd": 0,
                     "id": ann_id,
-                    "area": coco_box[2] * coco_box[3],
+                    "area": area,
                 }
                 annotations.append(ann)
                 ann_id += 1
@@ -145,10 +226,11 @@ class YoloDataset(CocoDataset):
             "annotations": annotations,
         }
         logging.info(
-            "Load {} txt files and {} boxes".format(len(image_info), len(annotations))
+            "Load {} txt files and {} annotations".format(len(image_info), len(annotations))
         )
         logging.info("Done (t={:0.2f}s)".format(time.time() - tic))
         return coco_dict
+
 
     def get_data_info(self, ann_path):
         """
