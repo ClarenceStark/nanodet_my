@@ -38,6 +38,6 @@ def make_data_center_txt(xml_dir, image_dir, output_txt='data_center.txt'):
             f.write(data_str + '\n')  # 将处理好的数据写入文件
             
 if __name__ == '__main__':
-    xml_dir = 'dataset_max/Annotations'  # 标注 XML 文件目录
-    image_dir = 'dataset_max/JPEGImages'  # 图像文件目录
+    xml_dir = 'data_set_max/Annotations'  # 标注 XML 文件目录
+    image_dir = 'data_set_max/JPEGImages'  # 图像文件目录
     make_data_center_txt(xml_dir, image_dir)
